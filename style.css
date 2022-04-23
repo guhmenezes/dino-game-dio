@@ -26,6 +26,20 @@ body {
   font-family: arial;
 }
 
+span{
+  font-family: 'Inconsolata', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #444;
+}
+
+.placar {
+  position:absolute;
+  right: 10rem;
+  bottom: 15rem;
+  z-index: 1;
+}
+
 @keyframes slideright {
   from {
       background-position: 70000%;
@@ -36,12 +50,12 @@ body {
 }
 
 .bg {
-  position: absolute;
-  bottom: 0px;
+  position: relative;
   background-image: url('background.png');
   background-repeat: repeat-x;
-  animation: slideright 600s infinite linear;
-  -webkit-animation: slideright 600s infinite linear;
-  width: 100%;
+  animation: slideright 1000s infinite linear;
+  -webkit-animation: slideright 1000s infinite linear;
+  width: 800px;
   height: 200px;
+  margin: 10rem auto;
 }
