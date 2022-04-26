@@ -1,14 +1,33 @@
-
 body {
   background: #fafafa;
+}
+
+i {
+  color: #cc0000;
+  font-size: 24px;
+  visibility: hidden;
+}
+
+.lifes{
+  width: 90px;
+  text-align: right;
+}
+
+.hidden{
+  visibility: hidden;
+}
+
+.show{
+  visibility: visible;
 }
 
 .dino {
   position: absolute;
   bottom: 0;
-  background-image: url(dino.png);
-  width: 60px;
-  height: 60px;
+  background-image: url(images/dino.png);
+  width: 68px;
+  height: 68px;
+  background-repeat: no-repeat;
 }
 
 .cactus {
@@ -16,29 +35,44 @@ body {
   width: 60px;
   height: 60px;
   bottom: 0;
-  background-image: url(cactus.png);
+  background-image: url(images/cactus.png);
+}
+
+
+.hearts {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  bottom: 0;
+  color: #cc0000;
 }
 
 .game-over {
   text-align: center;
   color: #666;
-  margin: 50px 0;
+  margin: 50px 0 100px 0;
   font-family: arial;
 }
 
-span{
+.pontuacao{
   font-family: 'Inconsolata', sans-serif;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 21px;
   color: #444;
 }
 
-.placar {
-  position:absolute;
+.header{
+  max-width: 800px;
+  padding-bottom: -20rem;
+  user-select: none;
+}
+
+/* .placar { */
+  /* position:absolute;
   right: 10rem;
   bottom: 15rem;
   z-index: 1;
-}
+} */
 
 @keyframes slideright {
   from {
@@ -51,11 +85,20 @@ span{
 
 .bg {
   position: relative;
-  background-image: url('background.png');
+  background-image: url('images/background.png');
   background-repeat: repeat-x;
   animation: slideright 1000s infinite linear;
   -webkit-animation: slideright 1000s infinite linear;
   width: 800px;
-  height: 200px;
-  margin: 10rem auto;
+  height: 250px;
+  margin: 5rem auto;
+}
+
+/* .progress{
+  position: absolute;
+  bottom: 15.3rem;
+} */
+
+.progress-bar{
+  width: 0;
 }
