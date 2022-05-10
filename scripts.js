@@ -1,228 +1,259 @@
-const dino = document.querySelector('.dino');
-const bg = document.querySelector('.bg');
-const pontuacao = document.querySelector('.pontuacao');
-const bar = document.querySelector('.progress-bar');
-const lifes = document.querySelectorAll('i');
+const dino = document.querySelector('.dino')
+const bg = document.querySelector('.bg')
+const pontuacao = document.querySelector('.pontuacao')
+const bar = document.querySelector('.progress-bar')
+const btnSpecial = document.querySelector('.btn-special')
+const lifes = document.querySelectorAll('i')
 
-let progress = 0;
-let position = 0;
-let count;
-let isJumping = false;
-let isFlying = false;
-let special = false;
+let progress = 0
+let position = 0
+let count
+let isJumping = false
+let isFlying = false
+let special = false
+let gameOver = false
 
-//BARRA PODER ESPECIAL
-function specialBar(){
-  special = false;
+//BARRA PODER ESPECIAL - OK
+function specialBar() {
+  special = false
   progress = setInterval(() => {
-    if (progress < 100 && !isFlying){
-      bar.classList.remove('bg-danger');
-      bar.classList.remove('bg-warning');
-      bar.classList.remove('progress-bar-striped');
-      bar.classList.remove('progress-bar-animated');
-      progress += 1;
+    if (gameOver === true) {
+      clearInterval(progress)
+    } else if (progress < 100 && !isFlying) {
+      bar.classList.remove('bg-danger')
+      bar.classList.remove('bg-warning')
+      bar.classList.remove('progress-bar-striped')
+      bar.classList.remove('progress-bar-animated')
+      progress += 1
       bar.style.width = progress + '%'
-      // console.log(progress)
-    } else if (progress > 98){
-      bar.classList.add('bg-warning');
+    } else if (progress > 98) {
+      bar.classList.add('bg-warning')
       bar.classList.add('progress-bar-striped')
       bar.classList.add('progress-bar-animated')
-    }if (progress >= 100){
+      btnSpecial.classList.add('btn-warning')
+    }
+    if (progress >= 100) {
       progress = 100
       special = true
-    } if (isFlying){
-      progress -= 5;
-      bar.style.width = progress + '%'
-    } if (progress <= 20 && isFlying){
-      bar.classList.add('bg-danger');
-      bar.classList.remove('bg-warning');
     }
-
+    if (isFlying) {
+      btnSpecial.classList.remove('btn-warning')
+      progress -= 5
+      bar.style.width = progress + '%'
+    }
+    if (progress <= 20 && isFlying) {
+      bar.classList.add('bg-danger')
+      bar.classList.remove('bg-warning')
+    }
   }, 1000)
 }
 
 //PONTUACAO - OK
-function placar(){
-    count = setInterval(() => {
-      if (+pontuacao.textContent < 92){
-        let variacao = 8;
-        count += variacao;
-        pontuacao.textContent = '0000' + count
-      } else if (+pontuacao.textContent < 995){
-        let variacao = 16;
-        count += variacao; 
-        pontuacao.textContent = '000' + count
-      } else if (+pontuacao.textContent < 9987){
-        let variacao = 32;
-        count += variacao; 
-        pontuacao.textContent = '00' + count
-      } else if (+pontuacao.textContent < 99971){
-        let variacao = 64;
-        count += variacao; 
-        pontuacao.textContent = '0' + count
-      } else if (+pontuacao.textContent < 999939){
-        let variacao = 128;
-        count += variacao; 
-        pontuacao.textContent = count
-      } else if (+pontuacao.textContent >= 999939){
-        pontuacao.textContent = '999999'
-      }
-  },1000);
+function placar() {
+  count = setInterval(() => {
+    if (gameOver === true) {
+      clearInterval(count)
+    } else if (+pontuacao.textContent < 92) {
+      let variacao = 8
+      count += variacao
+      pontuacao.textContent = '0000' + count
+    } else if (+pontuacao.textContent < 995) {
+      let variacao = 16
+      count += variacao
+      pontuacao.textContent = '000' + count
+    } else if (+pontuacao.textContent < 9987) {
+      let variacao = 32
+      count += variacao
+      pontuacao.textContent = '00' + count
+    } else if (+pontuacao.textContent < 99971) {
+      let variacao = 64
+      count += variacao
+      pontuacao.textContent = '0' + count
+    } else if (+pontuacao.textContent < 999939) {
+      let variacao = 128
+      count += variacao
+      pontuacao.textContent = count
+    } else if (+pontuacao.textContent >= 999939) {
+      pontuacao.textContent = '999999'
+    }
+  }, 1000)
 }
 
-//CONTROLES 
-function handleControls(event){
-  console.log(event)
-  if (event.keyCode === 32 || event.target && event.pointerType || event.keyCode === 38){
-    if (!isJumping && !isFlying) 
-    jump();
-  }
-  else if (event.keyCode === 17 && special){
-    fly();
+//CONTROLES - OK
+function handleControls(event) {
+  if (
+    event.keyCode === 32 ||
+    (event.target && event.pointerType) ||
+    event.keyCode === 38
+  ) {
+    if (!isJumping && !isFlying) jump()
+  } else if (event.keyCode === 17 && special) {
+    fly()
   }
 }
 
-//SALTO
-function jump(){
-  isJumping = true;
+function useSpecial() {
+  if (special) fly()
+}
+
+//SALTO - OK
+function jump() {
+  isJumping = true
   let upInterval = setInterval(() => {
-    if (position >= 150){
-      clearInterval(upInterval);
+    if (position >= 150) {
+      clearInterval(upInterval)
 
       let downInterval = setInterval(() => {
-        if (position <= 5){
-          position = 0;
-          dino.style.bottom = position + 'px';
-          clearInterval(downInterval);
-          isJumping = false;
-        } else if (!isFlying){
-          position -= 7;
-          dino.style.bottom = position + 'px';
+        if (position <= 5) {
+          position = 0
+          dino.style.bottom = position + 'px'
+          clearInterval(downInterval)
+          isJumping = false
+        } else if (!isFlying) {
+          position -= 7
+          dino.style.bottom = position + 'px'
         }
       }, 30)
     } else {
-      position += 15;
-      dino.style.bottom = position + 'px';
+      position += 15
+      dino.style.bottom = position + 'px'
     }
   }, 30)
 }
 
-//ESPECIAL - VOO
-function fly(){
-  isFlying = true;
-  special = false;
-  console.log(progress)
+//ESPECIAL VOO - OK
+function fly() {
+  isFlying = true
+  special = false
   let flyInterval = setInterval(() => {
     position = 80
-    dino.style.bottom = position+'px';
+    dino.style.bottom = position + 'px'
+    dino.style.backgroundImage = 'url(images/dino-fly1.png)'
 
-    for(let i = 1; i < 3; i++)
-    dino.style.backgroundImage = 'url(images/dino-fly'+i+'.png)';
-
-    console.log(position)
     clearInterval(flyInterval)
 
     let finishInterval = setInterval(() => {
-        dino.style.backgroundImage = 'url(images/dino.png)';
-        position = 0;
-        dino.style.bottom = position + 'px';
-        clearInterval(finishInterval);
-        isJumping = false;
-        setTimeout(() => isFlying = false, 700);
-        console.log(position)
-      },20100)
+      dino.style.backgroundImage = 'url(images/dino.png)'
+      position = 0
+      dino.style.bottom = position + 'px'
+      clearInterval(finishInterval)
+      isJumping = false
+      progress = 0
+      special = false
+      setTimeout(() => (isFlying = false), 700)
+    }, 20100)
   }, 10)
 }
-          
-  //CACTOS - OK
-  function createCactus(){
-  const cactus = document.createElement('div');
-  let cactusPosition = 750;
-  let randomTime = Math.random() * 3000 + 800;
 
-  cactus.classList.add('cactus');
-  cactus.style.left = cactusPosition + 'px';
-  bg.appendChild(cactus);
+//CACTOS - OK
+function createCactus() {
+  const cactus = document.createElement('div')
+  let cactusPosition = 750
+  if (window.screen.width <= 600) cactusPosition = window.screen.width - 50
+  let randomTime = Math.random() * 3000 + 800
 
-  let leftInterval = setInterval(() => {  
-    if (cactusPosition < -10){
-      clearInterval(leftInterval);
-      bg.removeChild(cactus);
-    } else if (cactusPosition > 10 && cactusPosition < 50 && position < 60 && !isFlying) {
+  cactus.classList.add('cactus')
+  cactus.style.left = cactusPosition + 'px'
+  bg.appendChild(cactus)
+
+  let leftInterval = setInterval(() => {
+    if (cactusPosition < -10) {
+      clearInterval(leftInterval)
+      bg.removeChild(cactus)
+    } else if (
+      cactusPosition > 10 &&
+      cactusPosition < 50 &&
+      position < 60 &&
+      !isFlying
+    ) {
       life = document.querySelectorAll('.show')
-      if (cactusPosition = 5){
-        clearInterval(leftInterval);
-        bg.removeChild(cactus);
+      if ((cactusPosition = 5)) {
+        clearInterval(leftInterval)
+        bg.removeChild(cactus)
       }
-      if( life.length === 3){
+      if (life.length === 3) {
         lifes[0].classList.remove('show')
-      } else if (life.length === 2){
+      } else if (life.length === 2) {
         lifes[1].classList.remove('show')
       } else {
+        gameOver = true
+        clearTimeout(newCactus)
+        if (
+          +window.localStorage.getItem('theBest') <= pontuacao.textContent ||
+          window.localStorage.getItem('theBest') === null
+        )
+          window.localStorage.setItem('theBest', pontuacao.textContent)
+        theBest = window.localStorage.getItem('theBest')
         document.body.innerHTML = `
+        <div class="game-over-container d-grid mx-auto text-center col-2">
         <h1 class="game-over"> Fim de Jogo </h1>
-        <div class="d-grid col-2 mx-auto">
-        <button class="btn btn-dark" onclick="window.location.reload()"> Jogar de novo </button>
+        <p class="h3"> Sua pontuação: </p>
+        <span class="pontuacao"> ${pontuacao.textContent}</span>
+        <p class="h5 mt-4"> Sua melhor pontuação: </p>
+        <span class="pontuacao"> ${theBest}</span>
+        <button class="btn btn-dark btn-again mt-5" onclick="window.location.reload()"> Jogar de novo </button>
         </div>
         `
       }
     } else {
-      cactusPosition -= 10;
-      cactus.style.left = cactusPosition + 'px';
+      cactusPosition -= 10
+      cactus.style.left = cactusPosition + 'px'
     }
   }, 40)
 
-  setTimeout(createCactus, randomTime);
-
+  newCactus = setTimeout(createCactus, randomTime)
 }
 
 //CORAÇÕES - OK
-function createHearts(){
-  const hearts = document.createElement('div');
-  let heartPositionX = 750;
-  let heartPositionY = Math.round(Math.random() * 150 + 15);
-  let randomTime = Math.random() * 120000 + 30000;
+function createHearts() {
+  const hearts = document.createElement('div')
+  let heartPositionX = 750
+  if (window.screen.width <= 600) heartPositionX = window.screen.width - 50
+  let heartPositionY = Math.round(Math.random() * 150 + 15)
+  let randomTime = Math.random() * 120000 + 30000
 
-  hearts.classList.add('fa-solid');
-  hearts.classList.add('fa-heart');
-  hearts.classList.add('hearts');
-  hearts.style.left = heartPositionX + 'px';
-  hearts.style.bottom = heartPositionY + 'px';
-  console.log(heartPositionX,heartPositionY);
-  console.log(position)
-  console.log(lifes)
-  bg.appendChild(hearts);
+  hearts.classList.add('fa-solid')
+  hearts.classList.add('fa-heart')
+  hearts.classList.add('hearts')
+  hearts.style.left = heartPositionX + 'px'
+  hearts.style.bottom = heartPositionY + 'px'
+  bg.appendChild(hearts)
 
-  let leftInterval = setInterval(() => {  
-    let life = document.querySelectorAll('.show');
-    if (heartPositionX < -5){
-      clearInterval(leftInterval);
-      bg.removeChild(hearts);
-    } else if (heartPositionX > 10 && heartPositionX < 50 
-      && heartPositionY < (position+65) && heartPositionY > (position-15) || heartPositionX < 70 && isFlying){
-      console.log('pegou', position, heartPositionY)
-      clearInterval(leftInterval);
+  let leftInterval = setInterval(() => {
+    let life = document.querySelectorAll('.show')
+    if (heartPositionX < -5) {
+      clearInterval(leftInterval)
       bg.removeChild(hearts)
-      if (life.length === 1){
+    } else if (
+      (heartPositionX > 10 &&
+        heartPositionX < 50 &&
+        heartPositionY < position + 65 &&
+        heartPositionY > position - 15) ||
+      (heartPositionX < 70 && isFlying)
+    ) {
+      clearInterval(leftInterval)
+      bg.removeChild(hearts)
+      if (life.length === 1) {
         lifes[1].classList.add('show')
-      } else if (life.length === 2){
+      } else if (life.length === 2) {
         lifes[0].classList.add('show')
-      } else if (life.length > 2){
+      } else if (life.length > 2) {
         count += 500
       }
     } else {
-      heartPositionX -= 10;
-      hearts.style.left = heartPositionX + 'px';
+      heartPositionX -= 10
+      hearts.style.left = heartPositionX + 'px'
     }
   }, 40)
 
-  setTimeout(createHearts, randomTime);
-
+  setTimeout(createHearts, randomTime)
 }
 
 //PLAY
-createCactus();
-specialBar();
-placar();
-setTimeout(createHearts, 45000);
-['click', 'keyup'].forEach(evt => document.addEventListener(evt, handleControls))
+createCactus()
+specialBar()
+placar()
+setTimeout(createHearts, 45000)
+;['click', 'keyup'].forEach(evt =>
+  document.addEventListener(evt, handleControls)
+)

@@ -13,8 +13,17 @@ i {
   text-align: right;
 }
 
+
 .hidden{
   visibility: hidden;
+}
+
+.btn-special{
+  box-shadow: black 2px 2px 3px;
+  font-size: 22px;
+  width: 100px;
+  height: 100px;
+  border-radius: 500px;
 }
 
 .show{
@@ -50,7 +59,7 @@ i {
 .game-over {
   text-align: center;
   color: #666;
-  margin: 50px 0 100px 0;
+  margin: 20px 0 50px 0;
   font-family: arial;
 }
 
@@ -62,17 +71,25 @@ i {
 }
 
 .header{
-  max-width: 800px;
-  padding-bottom: -20rem;
+  width: 800px;
   user-select: none;
 }
 
-/* .placar { */
-  /* position:absolute;
-  right: 10rem;
-  bottom: 15rem;
-  z-index: 1;
-} */
+.bg {
+  position: relative;
+  background-image: url('images/background.png');
+  background-repeat: repeat-x;
+  animation: slideright 1000s infinite linear;
+  -webkit-animation: slideright 1000s infinite linear;
+  max-width: 800px;
+  width: 100%;
+  height: 250px;
+  margin: 5rem auto;
+}
+
+.progress-bar{
+  width: 0;
+}
 
 @keyframes slideright {
   from {
@@ -83,22 +100,30 @@ i {
   }
 }
 
-.bg {
-  position: relative;
-  background-image: url('images/background.png');
-  background-repeat: repeat-x;
-  animation: slideright 1000s infinite linear;
-  -webkit-animation: slideright 1000s infinite linear;
-  width: 800px;
-  height: 250px;
-  margin: 5rem auto;
-}
+@media (max-width: 650px){
+  .bg{
+    margin: 2rem 0 8rem 0;
+  }
 
-/* .progress{
-  position: absolute;
-  bottom: 15.3rem;
-} */
+  .header{
+    width: 95vw;
+    justify-content: space-between;
+  }
 
-.progress-bar{
-  width: 0;
+  .stats{
+    align-items: flex-end !important;
+    flex-direction: column-reverse;
+    width: 35%;
+  }
+  
+  .progress{
+    width: 60%;
+    margin-top: -1.5rem;
+    margin-left: 1rem;
+  }
+
+  .game-over-container{
+    margin-top: 2rem;
+    width: 66%;
+  }
 }
