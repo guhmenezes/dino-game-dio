@@ -92,8 +92,12 @@ function handleControls(event) {
   }
 }
 
-function useSpecial() {
+function useSpecialButton() {
   if (special) fly()
+}
+
+function jumpButton(){
+  if (!isJumping && !isFlying) jump()
 }
 
 //SALTO - OK
@@ -149,7 +153,7 @@ function fly() {
 function createCactus() {
   const cactus = document.createElement('div')
   let cactusPosition = 750
-  if (window.screen.width <= 600) cactusPosition = window.screen.width - 50
+  if (window.screen.width <= 800) cactusPosition = window.screen.width - 50
   let randomTime = Math.random() * 3000 + 800
 
   cactus.classList.add('cactus')
@@ -187,10 +191,14 @@ function createCactus() {
         document.body.innerHTML = `
         <div class="game-over-container d-grid mx-auto text-center col-2">
         <h1 class="game-over"> Fim de Jogo </h1>
+        <div class="now">
         <p class="h3"> Sua pontuação: </p>
         <span class="pontuacao"> ${pontuacao.textContent}</span>
+        </div>
+        <div class="best">
         <p class="h5 mt-4"> Sua melhor pontuação: </p>
         <span class="pontuacao"> ${theBest}</span>
+        </div>
         <button class="btn btn-dark btn-again mt-5" onclick="window.location.reload()"> Jogar de novo </button>
         </div>
         `
